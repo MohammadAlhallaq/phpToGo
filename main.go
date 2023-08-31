@@ -1,16 +1,17 @@
 package main
 
 import (
+	"fmt"
 	account "phpToGo/examples"
 )
 
 func main() {
 
-	minor := account.MinorAccount{
-		Limit:   100,
-		Account: account.Account{Balance: 600},
+	adult := account.MinorAccount{
+		Account: account.Account{Balance: 1000},
 	}
 
-	minor.Withdraw(100)
-	minor.SendStatement()
+	msg := account.SendEmail(&adult, "test")
+
+	fmt.Println(msg)
 }

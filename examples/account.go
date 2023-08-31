@@ -1,6 +1,17 @@
 package account
 
-import "fmt"
+import (
+	"fmt"
+)
+
+type Contactable interface {
+	openingPhrase() string
+}
+
+func SendEmail(c Contactable, msg string) string {
+	message := c.openingPhrase() + " " + msg
+	return message
+}
 
 type Account struct {
 	Balance int
@@ -10,9 +21,18 @@ type AdultAccount struct {
 	Account
 }
 
+func (a AdultAccount) openingPhrase() string {
+	return "this is from an adult account"
+}
+
 type MinorAccount struct {
 	Account
 	Limit int
+}
+
+func (a *MinorAccount) openingPhrase() string {
+	return "this is from an minor account"
+
 }
 
 func (a *Account) Withdraw(amount int) {
