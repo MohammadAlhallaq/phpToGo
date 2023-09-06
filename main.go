@@ -1,17 +1,11 @@
 package main
 
-import (
-	"fmt"
-	account "phpToGo/examples"
-)
+import "fmt"
 
 func main() {
 
-	adult := account.MinorAccount{
-		Account: account.Account{Balance: 1000},
-	}
+	slice1 := []string{"a", "b", "c", "d"}
+	slice2 := append(slice1[:1], "v", "f", "g", "l")
+	fmt.Println(slice1, slice2)
 
-	msg := account.SendEmail(&adult, "test")
-
-	fmt.Println(msg)
 }
