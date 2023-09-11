@@ -1,11 +1,21 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
+
+func addProgrammer(wg *sync.WaitGroup) {
+	defer wg.Done()
+	fmt.Println("another routine")
+}
 
 func main() {
+	wg := sync.WaitGroup{}
 
-	slice1 := []string{"a", "b", "c", "d"}
-	slice2 := append(slice1[:1], "v", "f", "g", "l")
-	fmt.Println(slice1, slice2)
+	wg.Add(1)
 
+	go addProgrammer(&wg)
+
+	wg.Wait()
 }
