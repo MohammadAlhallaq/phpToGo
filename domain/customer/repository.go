@@ -17,7 +17,3 @@ type CustomerRepository interface {
 	Add(customer aggregate.Customer)
 	Update(customer aggregate.Customer)
 }
-
-func Get() (aggregate.Customer, error) {
-	return aggregate.Customer{}, nil
-}
