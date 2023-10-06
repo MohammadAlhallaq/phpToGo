@@ -7,7 +7,6 @@ import (
 )
 
 func TestNewCustomer(t *testing.T) {
-
 	type testCase struct {
 		test        string
 		name        string

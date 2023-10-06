@@ -12,8 +12,8 @@ var (
 	ErrUpdateCustomer      = errors.New("failed to update the customer in the repository")
 )
 
-type CustomerRepository interface {
-	Get(uuid uuid.UUID)
-	Add(customer aggregate.Customer)
-	Update(customer aggregate.Customer)
+type CustomerRepo interface {
+	Get(uuid.UUID) (aggregate.Customer, error)
+	Add(aggregate.Customer) error
+	Update(aggregate.Customer) error
 }

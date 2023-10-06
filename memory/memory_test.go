@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"phpToGo/aggregate"
 	"phpToGo/domain/customer"
+	"reflect"
 	"testing"
 )
 
@@ -20,7 +21,7 @@ func TestMemoryRepository_Get(t *testing.T) {
 		t.Fatal(err)
 	}
 	id := cust.GetID()
-	repo := MemoryRepository{
+	repo := MemoryRepo{
 		customers: map[uuid.UUID]aggregate.Customer{
 			id: cust,
 		},
@@ -65,7 +66,7 @@ func TestMemoryRepository_Add(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.test, func(t *testing.T) {
-			repo := MemoryRepository{
+			repo := MemoryRepo{
 				customers: map[uuid.UUID]aggregate.Customer{},
 			}
 			cust, err := aggregate.NewCustomer(tc.cust)
@@ -107,7 +108,7 @@ func TestMemoryRepository_Update(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.test, func(t *testing.T) {
-			repo := MemoryRepository{
+			repo := MemoryRepo{
 				customers: map[uuid.UUID]aggregate.Customer{},
 			}
 			cust, err := aggregate.NewCustomer(tc.cust)
@@ -136,4 +137,26 @@ func TestMemoryRepository_Update(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestNew(t *testing.T) {
+
+	type testCase struct {
+		test        string
+		expectedErr error
+	}
+	testCases := testCase{
+		test:        "New Customer",
+		expectedErr: nil,
+	}
+
+	t.Run(testCases.test, func(t *testing.T) {
+		CustomerAggregate := New()
+		repo := &MemoryRepo{
+			customers: map[uuid.UUID]aggregate.Customer{},
+		}
+		if reflect.TypeOf(CustomerAggregate) != reflect.TypeOf(repo) {
+			t.Error("customerAggregate is not of type Customer")
+		}
+	})
 }
