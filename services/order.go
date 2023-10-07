@@ -1,8 +1,9 @@
 package services
 
 import (
+	"github.com/google/uuid"
 	"phpToGo/domain/customer"
-	"phpToGo/memory"
+	"phpToGo/domain/customer/memory"
 )
 
 type OrderConfiguration func(os *OrderService) error
@@ -34,14 +35,13 @@ func WithMemoryCustomerRepository() OrderConfiguration {
 	return WithCustomerRepository(cr)
 }
 
-//func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID) error {
-//	// Get the customer
-//	//c, err := o.customers.Get(customerID)
-//	if err != nil {
-//		return err
-//	}
-//
-//	// Get each Product, Ouchie, We need a ProductRepository
-//
-//	return nil
-//}
+func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID) error {
+	_, err := o.customers.Get(customerID)
+	if err != nil {
+		return err
+	}
+
+	// Get each Product, Ouchie, We need a ProductRepository
+
+	return nil
+}
