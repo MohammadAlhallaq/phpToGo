@@ -18,14 +18,14 @@ func New() *MemoryProductRepo {
 	}
 }
 
-func (m *MemoryProductRepo) GetAll() ([]aggregate.Product, error) {
+func (m *MemoryProductRepo) GetAll() []aggregate.Product {
 	var products []aggregate.Product
 
-	for _, product := range m.products {
-		products = append(products, product)
+	for _, prod := range m.products {
+		products = append(products, prod)
 	}
 
-	return products, nil
+	return products
 }
 
 func (m *MemoryProductRepo) GetByID(id uuid.UUID) (aggregate.Product, error) {

@@ -12,7 +12,7 @@ var (
 )
 
 type ProductRepo interface {
-	GetAll() ([]aggregate.Product, error)
+	GetAll() []aggregate.Product
 	GetByID(id uuid.UUID) (aggregate.Product, error)
 	Add(product aggregate.Product) error
 	Update(product aggregate.Product) error
