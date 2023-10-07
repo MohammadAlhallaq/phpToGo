@@ -33,3 +33,15 @@ func WithMemoryCustomerRepository() OrderConfiguration {
 	cr := memory.New()
 	return WithCustomerRepository(cr)
 }
+
+//func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID) error {
+//	// Get the customer
+//	//c, err := o.customers.Get(customerID)
+//	if err != nil {
+//		return err
+//	}
+//
+//	// Get each Product, Ouchie, We need a ProductRepository
+//
+//	return nil
+//}

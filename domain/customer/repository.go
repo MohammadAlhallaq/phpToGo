@@ -13,7 +13,7 @@ var (
 )
 
 type CustomerRepo interface {
-	Get(uuid.UUID) (aggregate.Customer, error)
-	Add(aggregate.Customer) error
-	Update(aggregate.Customer) error
+	Get(id uuid.UUID) (aggregate.Customer, error)
+	Add(customer aggregate.Customer) error
+	Update(customer aggregate.Customer) error
 }
