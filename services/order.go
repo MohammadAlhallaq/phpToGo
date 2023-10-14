@@ -2,14 +2,19 @@ package services
 
 import (
 	"github.com/google/uuid"
+	"log"
+	"phpToGo/aggregate"
 	"phpToGo/domain/customer"
-	"phpToGo/domain/customer/memory"
+	memoryCustomer "phpToGo/domain/customer/memory"
+	"phpToGo/domain/product"
+	memoryProduct "phpToGo/domain/product/memory"
 )
 
 type OrderConfiguration func(os *OrderService) error
 
 type OrderService struct {
 	customers customer.CustomerRepo
+	products  product.ProductRepo
 }
 
 func NewOrderService(configurations ...OrderConfiguration) (*OrderService, error) {
@@ -23,25 +28,47 @@ func NewOrderService(configurations ...OrderConfiguration) (*OrderService, error
 	return os, nil
 }
 
-func WithCustomerRepository(cr customer.CustomerRepo) OrderConfiguration {
+func WithMemoryCustomerRepository() OrderConfiguration {
+	cr := memoryCustomer.New()
+
 	return func(os *OrderService) error {
 		os.customers = cr
 		return nil
 	}
 }
 
-func WithMemoryCustomerRepository() OrderConfiguration {
-	cr := memory.New()
-	return WithCustomerRepository(cr)
+func WithMemoryProductRepository(products []aggregate.Product) OrderConfiguration {
+	return func(os *OrderService) error {
+		pr := memoryProduct.New()
+
+		for _, p := range products {
+			err := pr.Add(p)
+			if err != nil {
+				return err
+			}
+		}
+		os.products = pr
+		return nil
+	}
 }
 
-func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID) error {
-	_, err := o.customers.Get(customerID)
+func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID) (float64, error) {
+	c, err := o.customers.Get(customerID)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	// Get each Product, Ouchie, We need a ProductRepository
+	var products []aggregate.Product
+	var price float64
+	for _, id := range productIDs {
+		p, err := o.products.GetByID(id)
+		if err != nil {
+			return 0, err
+		}
+		products = append(products, p)
+		price += p.GetPrice()
+	}
+	log.Printf("Customer: %s has ordered %d products", c.GetID(), len(products))
 
-	return nil
+	return price, nil
 }
