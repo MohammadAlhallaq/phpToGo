@@ -1,11 +1,13 @@
 package services
 
 import (
+	"context"
 	"github.com/google/uuid"
 	"log"
 	"phpToGo/aggregate"
 	"phpToGo/domain/customer"
 	memoryCustomer "phpToGo/domain/customer/memory"
+	"phpToGo/domain/customer/mongo"
 	"phpToGo/domain/product"
 	memoryProduct "phpToGo/domain/product/memory"
 )
@@ -48,6 +50,17 @@ func WithMemoryProductRepository(products []aggregate.Product) OrderConfiguratio
 			}
 		}
 		os.products = pr
+		return nil
+	}
+}
+
+func WithMongoCustomerRepository(connectionString string) OrderConfiguration {
+	return func(os *OrderService) error {
+		cr, err := mongo.New(context.Background(), connectionString)
+		if err != nil {
+			return err
+		}
+		os.customers = cr
 		return nil
 	}
 }

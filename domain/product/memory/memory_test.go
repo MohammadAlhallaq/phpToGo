@@ -2,7 +2,6 @@ package memory
 
 import (
 	"errors"
-	"fmt"
 	"github.com/google/uuid"
 	"phpToGo/aggregate"
 	"phpToGo/domain/product"
@@ -72,7 +71,6 @@ func TestMemoryProductRepo_GetByID(t *testing.T) {
 		t.Error(err)
 	}
 
-	fmt.Println()
 	testCases := []testCase{
 		{
 			test:        "Get By ID",

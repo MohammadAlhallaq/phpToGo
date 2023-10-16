@@ -39,7 +39,6 @@ func TestOrderService_CreateOrder(t *testing.T) {
 	}
 
 	err = os.customers.Add(customer)
-
 	if err != nil {
 		t.Error(err)
 	}
