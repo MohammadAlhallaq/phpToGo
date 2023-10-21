@@ -1,25 +1,24 @@
 package memory
 
 import (
+	"github.com/MohammadAlhallaq/phpToGo/domain/product"
 	"github.com/google/uuid"
-	"phpToGo/aggregate"
-	"phpToGo/domain/product"
 	"sync"
 )
 
 type MemoryRepo struct {
-	products map[uuid.UUID]aggregate.Product
+	products map[uuid.UUID]product.Product
 	sync.Mutex
 }
 
 func New() *MemoryRepo {
 	return &MemoryRepo{
-		products: make(map[uuid.UUID]aggregate.Product),
+		products: make(map[uuid.UUID]product.Product),
 	}
 }
 
-func (m *MemoryRepo) GetAll() []aggregate.Product {
-	var products []aggregate.Product
+func (m *MemoryRepo) GetAll() []product.Product {
+	var products []product.Product
 
 	for _, prod := range m.products {
 		products = append(products, prod)
@@ -28,16 +27,16 @@ func (m *MemoryRepo) GetAll() []aggregate.Product {
 	return products
 }
 
-func (m *MemoryRepo) GetByID(id uuid.UUID) (aggregate.Product, error) {
+func (m *MemoryRepo) GetByID(id uuid.UUID) (product.Product, error) {
 
 	if p, ok := m.products[id]; ok {
 		return p, nil
 	}
 
-	return aggregate.Product{}, product.ErrProductNotFound
+	return product.Product{}, product.ErrProductNotFound
 }
 
-func (m *MemoryRepo) Add(newProduct aggregate.Product) error {
+func (m *MemoryRepo) Add(newProduct product.Product) error {
 	m.Lock()
 	defer m.Unlock()
 
@@ -49,7 +48,7 @@ func (m *MemoryRepo) Add(newProduct aggregate.Product) error {
 	return nil
 }
 
-func (m *MemoryRepo) Update(updProduct aggregate.Product) error {
+func (m *MemoryRepo) Update(updProduct product.Product) error {
 	m.Lock()
 	m.Unlock()
 

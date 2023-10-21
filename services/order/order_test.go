@@ -1,25 +1,26 @@
-package services
+package order
 
 import (
+	"github.com/MohammadAlhallaq/phpToGo/domain/customer"
+	"github.com/MohammadAlhallaq/phpToGo/domain/product"
 	"github.com/google/uuid"
-	"phpToGo/aggregate"
 	"testing"
 )
 
-func init_product(t *testing.T) []aggregate.Product {
-	beer, err := aggregate.NewProduct("Beer", "Healthy Beverage", 1.99)
+func initProduct(t *testing.T) []product.Product {
+	beer, err := product.NewProduct("Beer", "Healthy Beverage", 1.99)
 	if err != nil {
 		t.Error(err)
 	}
-	peenuts, err := aggregate.NewProduct("Peenuts", "Healthy Snacks", 0.99)
+	peenuts, err := product.NewProduct("Peenuts", "Healthy Snacks", 0.99)
 	if err != nil {
 		t.Error(err)
 	}
-	wine, err := aggregate.NewProduct("Wine", "Healthy Snacks", 0.99)
+	wine, err := product.NewProduct("Wine", "Healthy Snacks", 0.99)
 	if err != nil {
 		t.Error(err)
 	}
-	products := []aggregate.Product{
+	products := []product.Product{
 		beer, peenuts, wine,
 	}
 	return products
@@ -27,13 +28,12 @@ func init_product(t *testing.T) []aggregate.Product {
 
 func TestOrderService_CreateOrder(t *testing.T) {
 
-	products := init_product(t)
+	products := initProduct(t)
 	os, err := NewOrderService(WithMemoryCustomerRepository(), WithMemoryProductRepository(products))
-
 	if err != nil {
 		t.Error(err)
 	}
-	customer, err := aggregate.NewCustomer("mohammad")
+	customer, err := customer.NewCustomer("mohammad")
 	if err != nil {
 		t.Error(err)
 	}

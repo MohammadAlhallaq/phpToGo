@@ -3,7 +3,6 @@ package product
 import (
 	"errors"
 	"github.com/google/uuid"
-	"phpToGo/aggregate"
 )
 
 var (
@@ -12,9 +11,9 @@ var (
 )
 
 type ProductRepo interface {
-	GetAll() []aggregate.Product
-	GetByID(id uuid.UUID) (aggregate.Product, error)
-	Add(product aggregate.Product) error
-	Update(product aggregate.Product) error
+	GetAll() []Product
+	GetByID(id uuid.UUID) (Product, error)
+	Add(product Product) error
+	Update(product Product) error
 	Delete(id uuid.UUID) error
 }

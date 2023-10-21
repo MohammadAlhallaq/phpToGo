@@ -2,9 +2,8 @@ package memory
 
 import (
 	"errors"
+	"github.com/MohammadAlhallaq/phpToGo/domain/product"
 	"github.com/google/uuid"
-	"phpToGo/aggregate"
-	"phpToGo/domain/product"
 	"testing"
 )
 
@@ -26,7 +25,7 @@ func TestMemoryProductRepo_Add(t *testing.T) {
 	}
 
 	repo := New()
-	newProd, err := aggregate.NewProduct("demo", "Good for you're health", 1.99)
+	newProd, err := product.NewProduct("demo", "Good for you're health", 1.99)
 	if err != nil {
 		t.Error(err)
 	}
@@ -43,8 +42,8 @@ func TestMemoryProductRepo_Add(t *testing.T) {
 
 func TestMemoryProductRepo_GetAll(t *testing.T) {
 	repo := New()
-	newProd1, err := aggregate.NewProduct("demo1", "Good for you're health1", 1.99)
-	newProd2, err := aggregate.NewProduct("demo2", "Good for you're health2", 1.99)
+	newProd1, err := product.NewProduct("demo1", "Good for you're health1", 1.99)
+	newProd2, err := product.NewProduct("demo2", "Good for you're health2", 1.99)
 	err = repo.Add(newProd2)
 	err = repo.Add(newProd1)
 	if err != nil {
@@ -65,7 +64,7 @@ func TestMemoryProductRepo_GetByID(t *testing.T) {
 	}
 
 	repo := New()
-	newProd1, err := aggregate.NewProduct("demo1", "Good for you're health1", 1.99)
+	newProd1, err := product.NewProduct("demo1", "Good for you're health1", 1.99)
 	err = repo.Add(newProd1)
 	if err != nil {
 		t.Error(err)

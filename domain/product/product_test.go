@@ -1,9 +1,9 @@
-package aggregate_test
+package product_test
 
 import (
 	"errors"
+	"github.com/MohammadAlhallaq/phpToGo/domain/product"
 	"github.com/google/uuid"
-	"phpToGo/aggregate"
 	"reflect"
 	"testing"
 )
@@ -22,7 +22,7 @@ func TestNewProduct(t *testing.T) {
 		{
 			test:        "should return error if name is empty",
 			name:        "",
-			expectedErr: aggregate.ErrMissingValue,
+			expectedErr: product.ErrMissingValue,
 		},
 		{
 			test:        "validvalues",
@@ -35,7 +35,7 @@ func TestNewProduct(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.test, func(t *testing.T) {
-			_, err := aggregate.NewProduct(tc.name, tc.description, tc.price)
+			_, err := product.NewProduct(tc.name, tc.description, tc.price)
 			if !errors.Is(err, tc.expectedErr) {
 				t.Errorf("Expected error: %v, got: %v", tc.expectedErr, err)
 			}
@@ -59,7 +59,7 @@ func TestProduct_GetID(t *testing.T) {
 		expectedErr: nil,
 	}
 	t.Run(tc.test, func(t *testing.T) {
-		product, err := aggregate.NewProduct(tc.name, tc.description, tc.price)
+		product, err := product.NewProduct(tc.name, tc.description, tc.price)
 		if !errors.Is(err, tc.expectedErr) {
 			t.Errorf("Expected error: %v, got: %v", tc.expectedErr, err)
 		}

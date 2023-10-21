@@ -2,36 +2,35 @@ package memory
 
 import (
 	"fmt"
+	"github.com/MohammadAlhallaq/phpToGo/domain/customer"
 	"github.com/google/uuid"
-	"phpToGo/aggregate"
-	"phpToGo/domain/customer"
 	"sync"
 )
 
 type MemoryRepo struct {
-	customers map[uuid.UUID]aggregate.Customer
+	customers map[uuid.UUID]customer.Customer
 	sync.Mutex
 }
 
 func New() *MemoryRepo {
 	return &MemoryRepo{
-		customers: make(map[uuid.UUID]aggregate.Customer),
+		customers: make(map[uuid.UUID]customer.Customer),
 	}
 }
 
-func (m *MemoryRepo) Get(id uuid.UUID) (aggregate.Customer, error) {
+func (m *MemoryRepo) Get(id uuid.UUID) (customer.Customer, error) {
 	if c, ok := m.customers[id]; ok {
 		return c, nil
 	}
-	return aggregate.Customer{}, customer.ErrCustomerNotFound
+	return customer.Customer{}, customer.ErrCustomerNotFound
 }
 
-func (m *MemoryRepo) Add(c aggregate.Customer) error {
+func (m *MemoryRepo) Add(c customer.Customer) error {
 	m.Lock()
 	defer m.Unlock()
 
 	if m.customers == nil {
-		m.customers = make(map[uuid.UUID]aggregate.Customer)
+		m.customers = make(map[uuid.UUID]customer.Customer)
 	}
 	if _, ok := m.customers[c.GetID()]; ok {
 		return fmt.Errorf("customer already exists: %w", customer.ErrFailedToAddCustomer)
@@ -41,7 +40,7 @@ func (m *MemoryRepo) Add(c aggregate.Customer) error {
 	return nil
 }
 
-func (m *MemoryRepo) Update(c aggregate.Customer) error {
+func (m *MemoryRepo) Update(c customer.Customer) error {
 
 	if _, ok := m.customers[c.GetID()]; !ok {
 		return fmt.Errorf("customer does not exist: %w", customer.ErrUpdateCustomer)

@@ -1,15 +1,14 @@
-package services
+package order
 
 import (
 	"context"
+	"github.com/MohammadAlhallaq/phpToGo/domain/customer"
+	memoryCustomer "github.com/MohammadAlhallaq/phpToGo/domain/customer/memory"
+	"github.com/MohammadAlhallaq/phpToGo/domain/customer/mongo"
+	"github.com/MohammadAlhallaq/phpToGo/domain/product"
+	memoryProduct "github.com/MohammadAlhallaq/phpToGo/domain/product/memory"
 	"github.com/google/uuid"
 	"log"
-	"phpToGo/aggregate"
-	"phpToGo/domain/customer"
-	memoryCustomer "phpToGo/domain/customer/memory"
-	"phpToGo/domain/customer/mongo"
-	"phpToGo/domain/product"
-	memoryProduct "phpToGo/domain/product/memory"
 )
 
 type OrderConfiguration func(os *OrderService) error
@@ -39,7 +38,7 @@ func WithMemoryCustomerRepository() OrderConfiguration {
 	}
 }
 
-func WithMemoryProductRepository(products []aggregate.Product) OrderConfiguration {
+func WithMemoryProductRepository(products []product.Product) OrderConfiguration {
 	return func(os *OrderService) error {
 		pr := memoryProduct.New()
 
@@ -71,7 +70,7 @@ func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID)
 		return 0, err
 	}
 
-	var products []aggregate.Product
+	var products []product.Product
 	var price float64
 	for _, id := range productIDs {
 		p, err := o.products.GetByID(id)
@@ -84,4 +83,18 @@ func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID)
 	log.Printf("Customer: %s has ordered %d products", c.GetID(), len(products))
 
 	return price, nil
+}
+
+func (o *OrderService) AddCustomer(name string) (uuid.UUID, error) {
+	c, err := customer.NewCustomer(name)
+	if err != nil {
+		return uuid.Nil, err
+	}
+	// Add to Repo
+	err = o.customers.Add(c)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	return c.GetID(), nil
 }

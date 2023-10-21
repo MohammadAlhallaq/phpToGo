@@ -1,18 +1,17 @@
-package aggregate
+package customer
 
 import (
 	"errors"
+	"github.com/MohammadAlhallaq/phpToGo"
 	"github.com/google/uuid"
-	"phpToGo/entity"
-	"phpToGo/valueobject"
 )
 
 var ErrInvalidCustomer = errors.New("name is required")
 
 type Customer struct {
-	person       *entity.Person
-	products     []*entity.Item
-	transactions []valueobject.Transaction
+	person       *phpToGo.Person
+	products     []*phpToGo.Item
+	transactions []phpToGo.Transaction
 }
 
 func NewCustomer(name string) (Customer, error) {
@@ -22,12 +21,12 @@ func NewCustomer(name string) (Customer, error) {
 	}
 
 	return Customer{
-		person: &entity.Person{
+		person: &phpToGo.Person{
 			Name: name,
 			ID:   uuid.New(),
 		},
-		products:     make([]*entity.Item, 0),
-		transactions: make([]valueobject.Transaction, 0),
+		products:     make([]*phpToGo.Item, 0),
+		transactions: make([]phpToGo.Transaction, 0),
 	}, nil
 }
 
@@ -37,7 +36,7 @@ func (c *Customer) GetID() uuid.UUID {
 
 func (c *Customer) SetID(id uuid.UUID) {
 	if c.person == nil {
-		c.person = &entity.Person{}
+		c.person = &phpToGo.Person{}
 	}
 	c.person.ID = id
 }
@@ -48,7 +47,7 @@ func (c *Customer) GetName() string {
 
 func (c *Customer) SetName(name string) {
 	if c.person == nil {
-		c.person = &entity.Person{}
+		c.person = &phpToGo.Person{}
 	}
 	c.person.Name = name
 }

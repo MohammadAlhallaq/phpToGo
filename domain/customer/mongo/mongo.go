@@ -2,11 +2,11 @@ package mongo
 
 import (
 	"context"
+	"github.com/MohammadAlhallaq/phpToGo/domain/customer"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"phpToGo/aggregate"
 	"time"
 )
 
@@ -20,15 +20,15 @@ type mongoCustomer struct {
 	Name string    `bson:"name"`
 }
 
-func NewFromCustomer(c aggregate.Customer) mongoCustomer {
+func NewFromCustomer(c customer.Customer) mongoCustomer {
 	return mongoCustomer{
 		ID:   c.GetID(),
 		Name: c.GetName(),
 	}
 }
 
-func (m mongoCustomer) ToAggregate() aggregate.Customer {
-	c := aggregate.Customer{}
+func (m mongoCustomer) ToAggregate() customer.Customer {
+	c := customer.Customer{}
 	c.SetID(m.ID)
 	c.SetName(m.Name)
 	return c
@@ -48,7 +48,7 @@ func New(ctx context.Context, connectionString string) (*MongoRepo, error) {
 	}, nil
 }
 
-func (m *MongoRepo) Get(id uuid.UUID) (aggregate.Customer, error) {
+func (m *MongoRepo) Get(id uuid.UUID) (customer.Customer, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -57,13 +57,13 @@ func (m *MongoRepo) Get(id uuid.UUID) (aggregate.Customer, error) {
 	var c mongoCustomer
 	err := result.Decode(&c)
 	if err != nil {
-		return aggregate.Customer{}, err
+		return customer.Customer{}, err
 	}
 	// Convert to aggregate
 	return c.ToAggregate(), nil
 }
 
-func (m *MongoRepo) Add(c aggregate.Customer) error {
+func (m *MongoRepo) Add(c customer.Customer) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -75,7 +75,7 @@ func (m *MongoRepo) Add(c aggregate.Customer) error {
 	return nil
 }
 
-func (m *MongoRepo) Update(customer aggregate.Customer) error {
+func (m *MongoRepo) Update(customer customer.Customer) error {
 	//TODO implement me
 	panic("implement me")
 }

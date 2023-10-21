@@ -1,6 +1,7 @@
-package services
+package taveran
 
 import (
+	"github.com/MohammadAlhallaq/phpToGo/services/order"
 	"github.com/google/uuid"
 	"log"
 )
@@ -8,7 +9,7 @@ import (
 type TavernConfiguration func(os *TavernService) error
 
 type TavernService struct {
-	OrderService   *OrderService
+	OrderService   *order.OrderService
 	BillingService interface{}
 }
 
@@ -23,7 +24,7 @@ func NewTaveran(cfgs ...TavernConfiguration) (*TavernService, error) {
 	return t, nil
 }
 
-func withOrderService(os *OrderService) TavernConfiguration {
+func withOrderService(os *order.OrderService) TavernConfiguration {
 	return func(t *TavernService) error {
 		t.OrderService = os
 		return nil

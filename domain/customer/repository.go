@@ -3,7 +3,6 @@ package customer
 import (
 	"errors"
 	"github.com/google/uuid"
-	"phpToGo/aggregate"
 )
 
 var (
@@ -13,7 +12,7 @@ var (
 )
 
 type CustomerRepo interface {
-	Get(id uuid.UUID) (aggregate.Customer, error)
-	Add(customer aggregate.Customer) error
-	Update(customer aggregate.Customer) error
+	Get(id uuid.UUID) (Customer, error)
+	Add(customer Customer) error
+	Update(customer Customer) error
 }

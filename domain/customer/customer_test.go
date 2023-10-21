@@ -1,8 +1,8 @@
-package aggregate_test
+package customer_test
 
 import (
 	"errors"
-	"phpToGo/aggregate"
+	"github.com/MohammadAlhallaq/phpToGo/domain/customer"
 	"testing"
 )
 
@@ -17,7 +17,7 @@ func TestNewCustomer(t *testing.T) {
 		{
 			test:        "Empty Name validation",
 			name:        "",
-			expectedErr: aggregate.ErrInvalidCustomer,
+			expectedErr: customer.ErrInvalidCustomer,
 		}, {
 			test:        "Valid Name",
 			name:        "Percy Bolmer",
@@ -27,7 +27,7 @@ func TestNewCustomer(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.test, func(t *testing.T) {
-			_, err := aggregate.NewCustomer(tc.name)
+			_, err := customer.NewCustomer(tc.name)
 			if !errors.Is(err, tc.expectedErr) {
 				t.Errorf("Expected error %v, got %v", tc.expectedErr, err)
 			}

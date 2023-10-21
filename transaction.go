@@ -1,4 +1,4 @@
-package valueobject
+package phpToGo
 
 import (
 	"github.com/google/uuid"
