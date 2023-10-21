@@ -8,25 +8,25 @@ import (
 	"sync"
 )
 
-type MemoryCustomerRepo struct {
+type MemoryRepo struct {
 	customers map[uuid.UUID]aggregate.Customer
 	sync.Mutex
 }
 
-func New() *MemoryCustomerRepo {
-	return &MemoryCustomerRepo{
+func New() *MemoryRepo {
+	return &MemoryRepo{
 		customers: make(map[uuid.UUID]aggregate.Customer),
 	}
 }
 
-func (m *MemoryCustomerRepo) Get(id uuid.UUID) (aggregate.Customer, error) {
+func (m *MemoryRepo) Get(id uuid.UUID) (aggregate.Customer, error) {
 	if c, ok := m.customers[id]; ok {
 		return c, nil
 	}
 	return aggregate.Customer{}, customer.ErrCustomerNotFound
 }
 
-func (m *MemoryCustomerRepo) Add(c aggregate.Customer) error {
+func (m *MemoryRepo) Add(c aggregate.Customer) error {
 	m.Lock()
 	defer m.Unlock()
 
@@ -41,7 +41,7 @@ func (m *MemoryCustomerRepo) Add(c aggregate.Customer) error {
 	return nil
 }
 
-func (m *MemoryCustomerRepo) Update(c aggregate.Customer) error {
+func (m *MemoryRepo) Update(c aggregate.Customer) error {
 
 	if _, ok := m.customers[c.GetID()]; !ok {
 		return fmt.Errorf("customer does not exist: %w", customer.ErrUpdateCustomer)

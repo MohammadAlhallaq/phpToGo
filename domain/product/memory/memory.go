@@ -7,18 +7,18 @@ import (
 	"sync"
 )
 
-type MemoryProductRepo struct {
+type MemoryRepo struct {
 	products map[uuid.UUID]aggregate.Product
 	sync.Mutex
 }
 
-func New() *MemoryProductRepo {
-	return &MemoryProductRepo{
+func New() *MemoryRepo {
+	return &MemoryRepo{
 		products: make(map[uuid.UUID]aggregate.Product),
 	}
 }
 
-func (m *MemoryProductRepo) GetAll() []aggregate.Product {
+func (m *MemoryRepo) GetAll() []aggregate.Product {
 	var products []aggregate.Product
 
 	for _, prod := range m.products {
@@ -28,7 +28,7 @@ func (m *MemoryProductRepo) GetAll() []aggregate.Product {
 	return products
 }
 
-func (m *MemoryProductRepo) GetByID(id uuid.UUID) (aggregate.Product, error) {
+func (m *MemoryRepo) GetByID(id uuid.UUID) (aggregate.Product, error) {
 
 	if p, ok := m.products[id]; ok {
 		return p, nil
@@ -37,7 +37,7 @@ func (m *MemoryProductRepo) GetByID(id uuid.UUID) (aggregate.Product, error) {
 	return aggregate.Product{}, product.ErrProductNotFound
 }
 
-func (m *MemoryProductRepo) Add(newProduct aggregate.Product) error {
+func (m *MemoryRepo) Add(newProduct aggregate.Product) error {
 	m.Lock()
 	defer m.Unlock()
 
@@ -49,7 +49,7 @@ func (m *MemoryProductRepo) Add(newProduct aggregate.Product) error {
 	return nil
 }
 
-func (m *MemoryProductRepo) Update(updProduct aggregate.Product) error {
+func (m *MemoryRepo) Update(updProduct aggregate.Product) error {
 	m.Lock()
 	m.Unlock()
 
@@ -60,7 +60,7 @@ func (m *MemoryProductRepo) Update(updProduct aggregate.Product) error {
 	return nil
 }
 
-func (m *MemoryProductRepo) Delete(id uuid.UUID) error {
+func (m *MemoryRepo) Delete(id uuid.UUID) error {
 	m.Lock()
 	m.Unlock()
 

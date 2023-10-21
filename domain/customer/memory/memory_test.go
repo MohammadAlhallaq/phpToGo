@@ -21,7 +21,7 @@ func TestMemoryRepository_Get(t *testing.T) {
 		t.Fatal(err)
 	}
 	id := cust.GetID()
-	repo := MemoryCustomerRepo{
+	repo := MemoryRepo{
 		customers: map[uuid.UUID]aggregate.Customer{
 			id: cust,
 		},
@@ -66,7 +66,7 @@ func TestMemoryRepository_Add(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.test, func(t *testing.T) {
-			repo := MemoryCustomerRepo{
+			repo := MemoryRepo{
 				customers: map[uuid.UUID]aggregate.Customer{},
 			}
 			cust, err := aggregate.NewCustomer(tc.cust)
@@ -108,7 +108,7 @@ func TestMemoryRepository_Update(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.test, func(t *testing.T) {
-			repo := MemoryCustomerRepo{
+			repo := MemoryRepo{
 				customers: map[uuid.UUID]aggregate.Customer{},
 			}
 			cust, err := aggregate.NewCustomer(tc.cust)
@@ -152,7 +152,7 @@ func TestNew(t *testing.T) {
 
 	t.Run(testCases.test, func(t *testing.T) {
 		CustomerAggregate := New()
-		repo := &MemoryCustomerRepo{
+		repo := &MemoryRepo{
 			customers: map[uuid.UUID]aggregate.Customer{},
 		}
 		if reflect.TypeOf(CustomerAggregate) != reflect.TypeOf(repo) {
