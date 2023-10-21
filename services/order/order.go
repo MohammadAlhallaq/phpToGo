@@ -90,7 +90,6 @@ func (o *OrderService) AddCustomer(name string) (uuid.UUID, error) {
 	if err != nil {
 		return uuid.Nil, err
 	}
-	// Add to Repo
 	err = o.customers.Add(c)
 	if err != nil {
 		return uuid.Nil, err
